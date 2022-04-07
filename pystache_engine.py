@@ -5,7 +5,7 @@ from prance import ResolvingParser
 class PystacheEngine:
     def __init__(self):
         self.code = dict()
-        self.template = str
+        self.template = str()
 
     # Takes the path of input files and a microservice: IP address dict and generates a dict with all info
     def convert_yamls_pystache(self, inputs, ip_dict, dict_variables=None):
