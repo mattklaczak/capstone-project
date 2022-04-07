@@ -41,17 +41,14 @@ class PystacheEngine:
     # Parameters: Dictionary API specs, String IP address, Optional: dictionary of microservices and their corresponding IPs
     # Returns: A dictionary of microservices and their specs in a form compatible with Pystache
     def get_swagger_info(self, spec, ip, dict_variables=None):
-        variables = dict() # WAS {}
-        operations = list() # WAS []
+        variables = dict()
+        operations = list()
         for path_key, path_val in spec['paths'].items():
             for method_key, method_val in path_val.items():
                 parameters = []
                 if 'parameters' in method_val:
                     for parameter_info in method_val['parameters']:
                         parameters.append({'param_name': parameter_info['name'], 'required': parameter_info['required'],})
-                # This WITH the basePath prepended
-                # operation = {'name': method_val['operationId'], 'ip': ip, 'request_method': method_key, 'path': spec['basePath'] + path_key, 'parameters': parameters,}
-                # This is WITHOUT the basePath prepended
                 operation = {'name': method_val['operationId'], 'ip': ip, 'request_method': method_key, 'path': path_key, 'parameters': parameters,}
                 if dict_variables:
                     for key, val in dict_variables.items():
