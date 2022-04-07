@@ -1,0 +1,29 @@
+#!/usr/bin/env python
+
+# Matthew Klaczak
+# mck70@pitt.edu
+
+from flask import Flask
+import requests
+
+# Class that utilizes Pystache templating to generate server code with aid of Flask library for the API Gateway microservice
+app = Flask(__name__)
+
+@app.route("/", methods=['GET']) # Built-in HTTP method GET already included
+def get_index():
+    return 'You have reached the API-Gateway index page'
+
+# This code template is used to automatically generate any and all server code on the fly.
+# The resulting code will have a corresponding function for each HTTP method that is included in the API spec
+{{#operations}} 
+@app.route('{{path}}', methods=['{{request_method}}'])
+def {{name}}({{#parameters}}{{param_name}},{{/parameters}}):
+    microservice_response = requests.{{request_method}}("http://{{ip}}{{port}}{{path}}",
+        {{#parameters}}{{param_name}},{{/parameters}}
+    )
+    return microservice_response.content
+{{/operations}}
+
+# Main method
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=8080)
